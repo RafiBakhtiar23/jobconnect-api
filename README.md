@@ -1,34 +1,69 @@
 # JobConnect API
 
-REST API Lowongan Kerja menggunakan Golang, Gin, GORM, JWT, dan MySQL.
+Project REST API sederhana untuk manajemen lowongan pekerjaan yang dibuat menggunakan Golang.
 
-## Features
+Project ini saya buat untuk belajar backend development menggunakan Golang, Gin Framework, GORM, JWT Authentication, dan MySQL.
 
-- Register
-- Login
-- JWT Authentication
-- Role Admin & User
-- CRUD Lowongan
-- Search Lowongan
-- Pagination
+## Fitur
 
-## Tech Stack
+* Register akun
+* Login akun
+* JWT Authentication
+* Role Admin dan User
+* CRUD Lowongan Kerja
+* Search Lowongan
+* Pagination
 
-- Golang
-- Gin
-- GORM
-- MySQL
-- JWT
-- Postman
+## Teknologi yang Digunakan
+
+* Golang
+* Gin
+* GORM
+* MySQL
+* JWT
+* Postman
 
 ## Endpoint
 
-POST /register
-POST /login
+### Authentication
 
-GET /jobs
-GET /jobs/:id
+* POST /register
+* POST /login
 
-POST /jobs
-PUT /jobs/:id
-DELETE /jobs/:id
+### Jobs
+
+* GET /jobs
+* GET /jobs/:id
+* POST /jobs
+* PUT /jobs/:id
+* DELETE /jobs/:id
+
+## Screenshot
+
+### Register
+![Register](assets/register.png)
+
+### Login
+![Login](assets/login.png)
+
+### Get Jobs
+![Get Jobs](assets/get-jobs.png)
+
+### Create Job
+![Create Job](assets/create-job.png)
+
+### Update Job
+![Update Job](assets/update-job.png)
+
+### Delete Job
+![Delete Job](assets/delete-job.png)
+
+## Catatan
+Pada project ini saya belajar mengenai:
+
+* REST API
+* Middleware
+* JWT Authentication
+* Role Based Access Control
+* CRUD menggunakan GORM
+* Koneksi Golang dengan MySQL

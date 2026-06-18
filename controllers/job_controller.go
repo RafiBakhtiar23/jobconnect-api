@@ -3,32 +3,23 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-
 	"jobconnect-api/config"
 	"jobconnect-api/models"
-
 	"github.com/gin-gonic/gin"
 )
 
 func CreateJob(c *gin.Context) {
-
 	var job models.Job
-
 	if err := c.ShouldBindJSON(&job); err != nil {
-
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Data tidak valid",
 		})
-
 		return
 	}
-
 	if err := config.DB.Create(&job).Error; err != nil {
-
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Gagal membuat lowongan",
 		})
-
 		return
 	}
 
@@ -39,19 +30,14 @@ func CreateJob(c *gin.Context) {
 }
 
 func GetJobs(c *gin.Context) {
-
 	var jobs []models.Job
-
-	// mengambil query dari URL
 	search := c.Query("search")
-
-	// mengambil page dan limit
 	page := c.DefaultQuery("page", "1")
 	limit := c.DefaultQuery("limit", "5")
 
 	var pageInt int
 	var limitInt int
-
+	
 	fmt.Sscanf(page, "%d", &pageInt)
 	fmt.Sscanf(limit, "%d", &limitInt)
 
@@ -62,7 +48,6 @@ func GetJobs(c *gin.Context) {
 
 	query := config.DB
 
-	// filter pencarian
 	if search != "" {
 		query = query.Where(
 			"judul LIKE ? OR company LIKE ?",
@@ -71,7 +56,6 @@ func GetJobs(c *gin.Context) {
 		)
 	}
 
-	// pagination
 	query.
 		Limit(limitInt).
 		Offset(offset).
@@ -87,9 +71,7 @@ func GetJobs(c *gin.Context) {
 
 func GetJobByID(c *gin.Context) {
 	var job models.Job
-
 	id := c.Param("id")
-
 	result := config.DB.First(&job, id)
 
 	if result.Error != nil {
@@ -106,11 +88,8 @@ func GetJobByID(c *gin.Context) {
 
 func UpdateJob(c *gin.Context) {
 	var job models.Job
-
 	id := c.Param("id")
-
 	result := config.DB.First(&job, id)
-
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "Lowongan tidak ditemukan",
@@ -135,9 +114,7 @@ func UpdateJob(c *gin.Context) {
 
 func DeleteJob(c *gin.Context) {
 	var job models.Job
-
 	id := c.Param("id")
-
 	result := config.DB.First(&job, id)
 
 	if result.Error != nil {
@@ -148,7 +125,6 @@ func DeleteJob(c *gin.Context) {
 	}
 
 	config.DB.Delete(&job)
-
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Lowongan berhasil dihapus",
 	})

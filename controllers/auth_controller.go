@@ -14,10 +14,7 @@ import (
 )
 
 func Register(c *gin.Context) {
-
 	var user models.User
-
-	// mengambil data JSON dari client
 	if err := c.ShouldBindJSON(&user); err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -27,7 +24,6 @@ func Register(c *gin.Context) {
 	}
 	fmt.Printf("%+v\n", user)
 
-	// mengubah password menjadi hash
 	hashedPassword, err := bcrypt.GenerateFromPassword(
 		[]byte(user.Password),
 		bcrypt.DefaultCost,
@@ -40,13 +36,9 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	// mengganti password asli dengan hash
 	user.Password = string(hashedPassword)
-
-	// set role default sebagai user
 	user.Role = "user"
 
-	// menyimpan data ke database
 	if err := config.DB.Create(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Gagal membuat akun",
@@ -54,7 +46,6 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	// response berhasil
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "Register berhasil",
 		"data":    user,
@@ -62,9 +53,7 @@ func Register(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-
 	var input models.LoginInput
-
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Input tidak valid",
@@ -73,7 +62,6 @@ func Login(c *gin.Context) {
 	}
 
 	var user models.User
-
 	result := config.DB.
 		Where("email = ?", input.Email).
 		First(&user)
@@ -102,7 +90,6 @@ func Login(c *gin.Context) {
 	fmt.Println("EMAIL :", user.Email)
 	fmt.Println("ROLE  :", user.Role)
 	fmt.Println("===========================")
-
 
 	token, err := utils.GenerateToken(
 		user.ID,
